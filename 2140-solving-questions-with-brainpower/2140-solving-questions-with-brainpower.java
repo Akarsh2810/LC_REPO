@@ -1,10 +1,13 @@
 class Solution {
     public long mostPoints(int[][] questions) {
-        int n = questions.length;
-        long[] dp = new long[questions.length];
-        dp[n - 1] = questions[n - 1][0];
-        for(int i = n - 2;i >= 0;i--)
-            dp[i] = Math.max(dp[i + 1], questions[i][0] + (i + questions[i][1] + 1 >= n ? 0 : dp[i + questions[i][1] + 1]));
-        return dp[0];
+        long[] memo = new long[questions.length];
+        return func(0, questions.length, questions, memo);
+    }
+    public long func(int i, int n, int[][] questions, long[] memo) {
+        if(i >= n)
+            return 0;
+        if(memo[i] != 0)
+            return memo[i];
+        return memo[i] = Math.max(func(i + 1, n, questions, memo), questions[i][0] + (i + questions[i][1] + 1 >= n ? 0 : func(i + questions[i][1] + 1, n, questions, memo)));
     }
 }
